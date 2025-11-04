@@ -7,6 +7,27 @@ using App.Data.OperationData;
 using App.DataSaving;
 using App.DataSaving.JsonSerialization;
 using App.Notification;
+using Microsoft.Extensions.DependencyInjection;
+
+public static class ServiceProviderKeyedExtensions
+{
+    public static Dictionary<object, T> GetKeyedServicesDictionary<T>(
+        this IServiceProvider provider,
+        IEnumerable<object> keys)
+        where T : class
+    {
+        var dict = new Dictionary<object, T>();
+
+        foreach (var key in keys)
+        {
+            var service = provider.GetKeyedService<T>(key);
+            if (service is not null)
+                dict[key] = service;
+        }
+
+        return dict;
+    }
+}
 
 internal static class Program
 {
@@ -15,9 +36,25 @@ internal static class Program
         Console.InputEncoding = Console.OutputEncoding = Encoding.UTF8;
         CultureInfo.CurrentCulture = new CultureInfo("eng-us");
 
-        DictOperationRepository operations = new();
-        DictCategoryRepository categories = new();
-        DictBankAccountRepository accounts = new();
+        var services = new ServiceCollection()
+            .AddSingleton<IOperationRepository, DictOperationRepository>()
+            .AddSingleton<IBankAccountRepository, DictBankAccountRepository>()
+            .AddSingleton<ICategoryRepository, DictCategoryRepository>()
+            .AddSingleton<BankAccountFactory<LogNotifier>>()
+            .AddSingleton<CategoryFactory>()
+            .AddSingleton<OperationBuilder>()
+            .AddSingleton<JsonSerializationVisitor>()
+            .AddKeyedSingleton<Serializer, JsonSerializer>("File")
+            .AddSingleton(provider =>
+            {
+                List<string> keys = ["File", "Console"];
+                return provider.GetKeyedServicesDictionary<Serializer>(keys);
+            })
+            .BuildServiceProvider();
+
+        IOperationRepository operations = services.GetRequiredService<IOperationRepository>();
+        ICategoryRepository categories = services.GetRequiredService<ICategoryRepository>();
+        IBankAccountRepository accounts = services.GetRequiredService<IBankAccountRepository>();
         OperationBuilder operationBuilder = new(operations);
         CategoryFactory categoryFactory = new(categories);
         BankAccountFactory<LogNotifier> accountFactory = new(accounts);
