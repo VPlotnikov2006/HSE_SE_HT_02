@@ -1,24 +1,18 @@
-using App.DataProvider;
+using App.Core.Context;
+using App.Data.CategoryData;
 
 namespace App.Core.Initialization;
 
-public class CategoryFactory(IDataProvider provider): EntityFactory<Category>(provider)
+public class CategoryFactory(ICategoryRepository repository)
 {
-    public override Category Create()
-    {
-        return new(Guid.NewGuid())
-        {
-            Name = _provider.GetValue<string>("Enter account name", GetDataOptions.Repeat)!,
-            Type = _provider.SelectValue(Enum.GetValues<OperationType>(), "Select operation type")
-        };
-    }
+    private readonly ICategoryRepository _repository = repository;
 
-    public Category Create(string Name)
+    public Category Create(CategoryContext ctx)
     {
-        return new(Guid.NewGuid())
-        {
-            Name = Name,
-            Type = _provider.SelectValue(Enum.GetValues<OperationType>(), "Select operation type")
-        };
+        Category cat = new(Guid.NewGuid(), ctx);
+
+        _repository.AddCategory(cat);
+
+        return cat;
     }
 }

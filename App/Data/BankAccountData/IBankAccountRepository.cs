@@ -7,9 +7,9 @@ namespace App.Data.BankAccountData;
 public interface IBankAccountRepository<TNotifier>
  where TNotifier : INotifier
 {
-    public BankAccount<TNotifier> GetAccountByName();
-    public BankAccount<TNotifier> GetAccountById();
-    public IEnumerable<BankAccount<TNotifier>> GetAll();
+    public BankAccount<TNotifier>? GetAccountByName(string name);
+    public BankAccount<TNotifier>? GetAccountById(Guid id);
+    public IReadOnlyCollection<BankAccount<TNotifier>> GetAll();
 
     public bool UpdateAccount(Guid id, BankAccountContext new_ctx);
 
