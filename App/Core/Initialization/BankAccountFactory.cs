@@ -1,17 +1,20 @@
-using App.DataProvider;
+using App.Core.Context;
+using App.Data.BankAccountData;
 using App.Notification;
 
 namespace App.Core.Initialization;
 
-public class BankAccountFactory<TNotifier>(IDataProvider provider): EntityFactory<BankAccount<TNotifier>>(provider)
+public class BankAccountFactory<TNotifier>(IBankAccountRepository<TNotifier> repository)
  where TNotifier : INotifier
 {
-    public override BankAccount<TNotifier> Create()
+    private readonly IBankAccountRepository<TNotifier> _repository = repository;
+
+    public BankAccount<TNotifier> Create(BankAccountContext ctx)
     {
-        return new(Guid.NewGuid())
-        {
-            Name = _provider.GetValue<string>("Enter account name", GetDataOptions.Repeat)!,
-            Balance = _provider.GetLimitedValue<decimal>(0, null, "Enter initial balance (leave empty if zero)")
-        };
+        BankAccount<TNotifier> account = new(Guid.NewGuid(), ctx);
+
+        _repository.AddAccount(account);
+
+        return account;
     }
 }
