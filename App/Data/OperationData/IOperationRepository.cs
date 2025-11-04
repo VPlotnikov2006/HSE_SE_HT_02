@@ -3,16 +3,10 @@ using App.Core.Context;
 
 namespace App.Data.OperationData;
 
-public interface IOperationRepository
+public interface IOperationRepository: IRepository<Operation>
 {
-    public Operation? GetOperationById(Guid id);
-    public IReadOnlyCollection<Operation> GetAll();
     public IReadOnlyCollection<Operation> GetAccountOperations(Guid account_id);
     public IReadOnlyCollection<Operation> GetCategoryOperations(Guid category_id);
 
-    public bool UpdateOperation(Guid id, OperationLink new_link, OperationContext new_ctx);
-
-    public bool DeleteOperation(Guid id);
-
-    public bool AddOperation(Operation operation);
+    public bool Update(Guid id, OperationLink new_link, OperationContext new_ctx);
 }

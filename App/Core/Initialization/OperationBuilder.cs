@@ -70,7 +70,7 @@ public class OperationBuilder(IOperationRepository repository)
 
         Operation operation = new(Guid.NewGuid(), link, ctx);
 
-        _repository.AddOperation(operation);
+        _repository.Add(operation);
 
         return operation;
     }

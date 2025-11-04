@@ -7,9 +7,9 @@ public class DictCategoryRepository : ICategoryRepository
 {
     private readonly Dictionary<Guid, Category> categories = [];
 
-    public bool AddCategory(Category category)
+    public bool Add(Category category)
     {
-        if (GetCategoryById(category.Id) is not null || GetCategoryByName(category.Name!) is not null)
+        if (GetById(category.Id) is not null || GetByName(category.Name!) is not null)
         {
             return false;
         }
@@ -17,7 +17,7 @@ public class DictCategoryRepository : ICategoryRepository
         return true;
     }
 
-    public bool DeleteCategory(Guid id)
+    public bool Delete(Guid id)
     {
         return categories.Remove(id);
     }
@@ -27,20 +27,20 @@ public class DictCategoryRepository : ICategoryRepository
         return [.. categories.Values];
     }
 
-    public Category? GetCategoryById(Guid id)
+    public Category? GetById(Guid id)
     {
         return categories.GetValueOrDefault(id);
     }
 
-    public Category? GetCategoryByName(string name)
+    public Category? GetByName(string name)
     {
         return categories.FirstOrDefault(cat => cat.Value?.Name == name).Value;
     }
 
-    public bool UpdateCategory(Guid id, CategoryContext new_ctx)
+    public bool Update(Guid id, CategoryContext new_ctx)
     {
-        var cat1 = GetCategoryById(id);
-        var cat2 = GetCategoryByName(new_ctx.Name);
+        var cat1 = GetById(id);
+        var cat2 = GetByName(new_ctx.Name);
         if (cat1 is null)
         {
             return false;

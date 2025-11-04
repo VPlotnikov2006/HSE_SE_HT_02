@@ -9,9 +9,9 @@ public class DictBankAccountRepository<TNotifier> : IBankAccountRepository<TNoti
 {
     private readonly Dictionary<Guid, BankAccount<TNotifier>> accounts = [];
 
-    public bool AddAccount(BankAccount<TNotifier> account)
+    public bool Add(BankAccount<TNotifier> account)
     {
-        if (GetAccountById(account.Id) is not null)
+        if (GetById(account.Id) is not null)
         {
             return false;
         }
@@ -19,17 +19,17 @@ public class DictBankAccountRepository<TNotifier> : IBankAccountRepository<TNoti
         return true;
     }
 
-    public bool DeleteAccount(Guid id)
+    public bool Delete(Guid id)
     {
         return accounts.Remove(id);
     }
 
-    public BankAccount<TNotifier>? GetAccountById(Guid id)
+    public BankAccount<TNotifier>? GetById(Guid id)
     {
         return accounts.GetValueOrDefault(id);
     }
 
-    public BankAccount<TNotifier>? GetAccountByName(string name)
+    public BankAccount<TNotifier>? GetByName(string name)
     {
         return accounts.FirstOrDefault(account => account.Value?.Name == name).Value;
     }
@@ -39,9 +39,9 @@ public class DictBankAccountRepository<TNotifier> : IBankAccountRepository<TNoti
         return [.. accounts.Values];
     }
 
-    public bool UpdateAccount(Guid id, BankAccountContext new_ctx)
+    public bool Update(Guid id, BankAccountContext new_ctx)
     {
-        var acc = GetAccountById(id);
+        var acc = GetById(id);
         if (acc is null)
         {
             return false;

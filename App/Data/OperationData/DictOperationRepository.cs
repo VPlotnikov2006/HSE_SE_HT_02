@@ -7,9 +7,9 @@ public class DictOperationRepository : IOperationRepository
 {
     private readonly Dictionary<Guid, Operation> operations = [];
 
-    public bool AddOperation(Operation operation)
+    public bool Add(Operation operation)
     {
-        if (GetOperationById(operation.Id) is not null)
+        if (GetById(operation.Id) is not null)
         {
             return false;
         }
@@ -17,7 +17,7 @@ public class DictOperationRepository : IOperationRepository
         return true;
     }
 
-    public bool DeleteOperation(Guid id)
+    public bool Delete(Guid id)
     {
         return operations.Remove(id);
     }
@@ -37,14 +37,14 @@ public class DictOperationRepository : IOperationRepository
         return [.. operations.Where(op => op.Value.CategoryId == category_id).Select(op => op.Value)];
     }
 
-    public Operation? GetOperationById(Guid id)
+    public Operation? GetById(Guid id)
     {
         return operations.GetValueOrDefault(id);
     }
 
-    public bool UpdateOperation(Guid id, OperationLink new_link, OperationContext new_ctx)
+    public bool Update(Guid id, OperationLink new_link, OperationContext new_ctx)
     {
-        var op = GetOperationById(id);
+        var op = GetById(id);
         if (op is null)
         {
             return false;

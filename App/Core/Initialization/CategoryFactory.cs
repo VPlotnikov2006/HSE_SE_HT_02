@@ -11,7 +11,7 @@ public class CategoryFactory(ICategoryRepository repository)
     {
         Category cat = new(Guid.NewGuid(), ctx);
 
-        _repository.AddCategory(cat);
+        _repository.Add(cat);
 
         return cat;
     }

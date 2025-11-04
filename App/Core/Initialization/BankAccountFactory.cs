@@ -13,7 +13,7 @@ public class BankAccountFactory<TNotifier>(IBankAccountRepository<TNotifier> rep
     {
         BankAccount<TNotifier> account = new(Guid.NewGuid(), ctx);
 
-        _repository.AddAccount(account);
+        _repository.Add(account);
 
         return account;
     }
