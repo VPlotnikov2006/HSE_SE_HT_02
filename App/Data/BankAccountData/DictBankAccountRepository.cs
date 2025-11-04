@@ -1,15 +1,13 @@
 using App.Core;
 using App.Core.Context;
-using App.Notification;
 
 namespace App.Data.BankAccountData;
 
-public class DictBankAccountRepository<TNotifier> : IBankAccountRepository<TNotifier>
- where TNotifier : INotifier
+public class DictBankAccountRepository : IBankAccountRepository
 {
-    private readonly Dictionary<Guid, BankAccount<TNotifier>> accounts = [];
+    private readonly Dictionary<Guid, BankAccount> accounts = [];
 
-    public bool Add(BankAccount<TNotifier> account)
+    public bool Add(BankAccount account)
     {
         if (GetById(account.Id) is not null)
         {
@@ -24,17 +22,17 @@ public class DictBankAccountRepository<TNotifier> : IBankAccountRepository<TNoti
         return accounts.Remove(id);
     }
 
-    public BankAccount<TNotifier>? GetById(Guid id)
+    public BankAccount? GetById(Guid id)
     {
         return accounts.GetValueOrDefault(id);
     }
 
-    public BankAccount<TNotifier>? GetByName(string name)
+    public BankAccount? GetByName(string name)
     {
         return accounts.FirstOrDefault(account => account.Value?.Name == name).Value;
     }
 
-    public IReadOnlyCollection<BankAccount<TNotifier>> GetAll()
+    public IReadOnlyCollection<BankAccount> GetAll()
     {
         return [.. accounts.Values];
     }

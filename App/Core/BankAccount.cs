@@ -1,10 +1,12 @@
 using App.Core.Context;
+using App.DataSaving;
 using App.Notification;
 
 namespace App.Core;
 
-public class BankAccount<TNotifier> where TNotifier : INotifier
+public class BankAccount(INotifier notifier): ISerializable
 {
+    private readonly INotifier _notifier = notifier;
     private decimal balance = 0;
 
     public Guid Id { get; private set; }
@@ -16,20 +18,24 @@ public class BankAccount<TNotifier> where TNotifier : INotifier
         set => balance = value < 0 ? throw new ArgumentOutOfRangeException(nameof(Balance)) : value;
     }
 
-    public BankAccount(Guid id)
+    public BankAccount(INotifier notifier, Guid id) : this(notifier)
     {
         Id = id;
     }
 
-    public BankAccount(Guid id, BankAccountContext ctx)
+    public BankAccount(INotifier notifier, Guid id, BankAccountContext ctx) : this(notifier, id)
     {
-        Id = id;
         Name = ctx.Name;
         Balance = ctx.Balance;
     }
 
     public void Notify(string Message)
     {
-        TNotifier.GetInstance().SendMessage(Name!, Message);
+        _notifier.SendMessage(Name!, Message);
+    }
+
+    public void Accept(ISerializationVisitor visitor)
+    {
+        visitor.Visit(this);
     }
 }

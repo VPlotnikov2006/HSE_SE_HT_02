@@ -27,9 +27,6 @@ public class OperationBuilder(IOperationRepository repository)
 
     public OperationBuilder SetAmount(decimal amount)
     {
-        if (amount <= 0)
-            throw new ArgumentOutOfRangeException(nameof(amount), "Amount must be positive");
-
         _amount = amount;
         return this;
     }

@@ -1,4 +1,4 @@
 namespace App.Core.Context;
 
-public record OperationContext(decimal Amount, DateTime Date, string? Description);
+public record OperationContext(decimal Amount, DateTimeOffset Date, string? Description);
 
