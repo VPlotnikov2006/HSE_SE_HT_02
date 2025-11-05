@@ -3,20 +3,29 @@ using App.Core;
 
 namespace App.DataSaving.ConsoleSerialization;
 
+/// <summary>
+/// Visitor to serialize data in console
+/// </summary>
 public class ConsoleSerializationVisitor : ISerializationVisitor
 {
+    /// <summary>
+    /// Object to store serialized data
+    /// </summary>
     private readonly StringBuilder serialization = new();
 
+    /// <inheritdoc/>
     public void Reset()
     {
         serialization.Clear();
     }
 
+    /// <inheritdoc/>
     public string Serialize()
     {
         return serialization.ToString();
     }
 
+    /// <inheritdoc/>
     public void Visit(Operation operation)
     {
         Reset();
@@ -30,6 +39,7 @@ public class ConsoleSerializationVisitor : ISerializationVisitor
         serialization.AppendLine($"Description: {operation.Description ?? "<no description>"}");
     }
 
+    /// <inheritdoc/>
     public void Visit(Category category)
     {
         Reset();
@@ -40,6 +50,7 @@ public class ConsoleSerializationVisitor : ISerializationVisitor
         serialization.AppendLine($"Type: {category.Type}");
     }
 
+    /// <inheritdoc/>
     public void Visit(BankAccount account)
     {
         Reset();

@@ -4,8 +4,12 @@ using App.DataProvider;
 
 namespace App.UserActions.Create;
 
+/// <summary>
+/// Create category action
+/// </summary>
 public class CreateCategory : UserAction
 {
+    /// <inheritdoc/>
     public override void Invoke(Application app)
     {
 

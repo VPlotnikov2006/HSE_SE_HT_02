@@ -3,8 +3,12 @@ using Spectre.Console;
 
 namespace App.UserActions.Export;
 
+/// <summary>
+/// Export to console action
+/// </summary>
 public class ExportToConsole : UserAction
 {
+    /// <inheritdoc/>
     public override void Invoke(Application app)
     {
         AnsiConsole.Clear();

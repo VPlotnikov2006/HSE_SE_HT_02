@@ -132,6 +132,7 @@ public class SCDataProvider : IDataProvider
         }
     }
 
+    /// <inheritdoc/>
     public T SelectValue<T>(IReadOnlyCollection<T>? options, string? prompt = null) where T: notnull
     {
         if (options == null || options.Count == 0)
@@ -148,7 +149,8 @@ public class SCDataProvider : IDataProvider
         return AnsiConsole.Prompt(selectionPrompt);
     }
 
-    public IEnumerable<T> SelectValue<T>(Group<T> options) where T: notnull
+    /// <inheritdoc/>
+    public IEnumerable<T> SelectValue<T>(Group<T> options) where T : notnull
     {
         List<T> result = [options.value];
         var currentGroup = options;

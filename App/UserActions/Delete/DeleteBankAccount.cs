@@ -4,8 +4,12 @@ using Spectre.Console;
 
 namespace App.UserActions.Delete;
 
+/// <summary>
+/// Delete account action
+/// </summary>
 public class DeleteBankAccount : UserAction
 {
+    /// <inheritdoc/>
     public override void Invoke(Application app)
     {
         string accountInput = app.dataProvider.GetValue<string>("Enter account Id or Name", GetDataOptions.Repeat)!;

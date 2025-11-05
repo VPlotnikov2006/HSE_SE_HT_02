@@ -3,8 +3,12 @@ using Spectre.Console;
 
 namespace App.UserActions.Delete;
 
+/// <summary>
+/// Delete operation action
+/// </summary>
 public class DeleteOperation : UserAction
 {
+    /// <inheritdoc/>
     public override void Invoke(Application app)
     {
 

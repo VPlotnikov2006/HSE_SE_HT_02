@@ -5,8 +5,12 @@ using Spectre.Console;
 
 namespace App.UserActions.Update;
 
+/// <summary>
+/// Update account action
+/// </summary>
 public class UpdateBankAccount : UserAction
 {
+    /// <inheritdoc/>
     public override void Invoke(Application app)
     {
         AnsiConsole.MarkupLine("[yellow]--- Update Bank Account ---[/]");

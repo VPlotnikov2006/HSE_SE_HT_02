@@ -33,9 +33,20 @@ public interface IDataProvider
         GetDataOptions options = GetDataOptions.Default
     ) where T : struct, IParsable<T>, IComparable<T>;
 
-    //TODO: Documentation
+    /// <summary>
+    /// Returns one of the values in <paramref name="options"/>
+    /// </summary>
+    /// <typeparam name="T">Type of value, requested from user</typeparam>
+    /// <param name="options">List of possible values</param>
+    /// <param name="prompt">Help string displayed to user</param>
+    /// <returns>User value</returns>
     public T SelectValue<T>(IReadOnlyCollection<T>? options, string? prompt = null) where T: notnull;
 
-    //TODO: Documentation
+    /// <summary>
+    /// Returns one of the values in <paramref name="options"/>
+    /// </summary>
+    /// <typeparam name="T">Type of value, requested from user</typeparam>
+    /// <param name="options">Nested groups of values</param>
+    /// <returns>User value</returns>
     public IEnumerable<T> SelectValue<T>(Group<T> options) where T: notnull;
 }

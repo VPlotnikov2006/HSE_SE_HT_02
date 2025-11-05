@@ -8,6 +8,9 @@ using App.UserActions;
 
 namespace App;
 
+/// <summary>
+/// Base application class
+/// </summary>
 public class Application
 (
     IOperationRepository _operations,

@@ -5,8 +5,12 @@ using Spectre.Console;
 
 namespace App.UserActions.Create;
 
+/// <summary>
+/// Create operation action
+/// </summary>
 public class CreateOperation : UserAction
 {
+    /// <inheritdoc/>
     public override void Invoke(Application app)
     {
         string accountInput = app.dataProvider.GetValue<string>(
@@ -58,7 +62,7 @@ public class CreateOperation : UserAction
         DateTime date = dateInput == default ? DateTime.Now : dateInput;
 
         string? desc = app.dataProvider.GetValue<string>("Enter description");
-        
+
         _ = app.operationBuilder
             .SetBankAccount(account.Id)
             .SetCategory(category.Id)

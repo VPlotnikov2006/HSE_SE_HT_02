@@ -4,8 +4,13 @@ using Spectre.Console;
 
 namespace App.UserActions.Delete;
 
+
+/// <summary>
+/// Delete category action
+/// </summary>
 public class DeleteCategory : UserAction
 {
+    /// <inheritdoc/>
     public override void Invoke(Application app)
     {
         string categoryInput = app.dataProvider.GetValue<string>("Enter category Id or Name", GetDataOptions.Repeat)!;

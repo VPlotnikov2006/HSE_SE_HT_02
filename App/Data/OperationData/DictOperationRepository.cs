@@ -3,10 +3,17 @@ using App.Core.Context;
 
 namespace App.Data.OperationData;
 
+/// <summary>
+/// Operation repository based on <see cref="Dictionary"/>
+/// </summary>
 public class DictOperationRepository : IOperationRepository
 {
+    /// <summary>
+    /// Dictionary with all stored operations
+    /// </summary>
     private readonly Dictionary<Guid, Operation> operations = [];
 
+    /// <inheritdoc/>
     public bool Add(Operation operation)
     {
         if (GetById(operation.Id) is not null)
@@ -17,31 +24,37 @@ public class DictOperationRepository : IOperationRepository
         return true;
     }
 
+    /// <inheritdoc/>
     public bool Delete(Guid id)
     {
         return operations.Remove(id);
     }
 
+    /// <inheritdoc/>
     public IReadOnlyCollection<Operation> GetAccountOperations(Guid account_id)
     {
         return [.. operations.Where(op => op.Value.BankAccountId == account_id).Select(op => op.Value)];
     }
 
+    /// <inheritdoc/>
     public IReadOnlyCollection<Operation> GetAll()
     {
         return [.. operations.Values];
     }
 
+    /// <inheritdoc/>
     public IReadOnlyCollection<Operation> GetCategoryOperations(Guid category_id)
     {
         return [.. operations.Where(op => op.Value.CategoryId == category_id).Select(op => op.Value)];
     }
 
+    /// <inheritdoc/>
     public Operation? GetById(Guid id)
     {
         return operations.GetValueOrDefault(id);
     }
 
+    /// <inheritdoc/>
     public bool Update(Guid id, OperationLink new_link, OperationContext new_ctx)
     {
         var op = GetById(id);

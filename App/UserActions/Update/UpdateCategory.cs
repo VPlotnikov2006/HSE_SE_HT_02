@@ -5,8 +5,12 @@ using Spectre.Console;
 
 namespace App.UserActions.Update;
 
+/// <summary>
+/// Update category action
+/// </summary>
 public class UpdateCategory : UserAction
 {
+    /// <inheritdoc/>
     public override void Invoke(Application app)
     {
         AnsiConsole.MarkupLine("[yellow]--- Update Category ---[/]");
@@ -33,7 +37,7 @@ public class UpdateCategory : UserAction
             Type: category.Type
         );
 
-        
+
         app.categories.Update(category.Id, ctx);
 
 

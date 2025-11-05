@@ -2,10 +2,17 @@ using System.Diagnostics;
 
 namespace App.UserActions.ActionDecorators;
 
-public class TimerDecorator: ActionDecorator
+/// <summary>
+/// Decorator, that measures time
+/// </summary>
+public class TimerDecorator : ActionDecorator
 {
+    /// <summary>
+    /// Path to write result
+    /// </summary>
     private const string Path = @"../../../../.log";
 
+    /// <inheritdoc/>
     public override void Invoke(Application application)
     {
         var stopwatch = Stopwatch.StartNew();
@@ -18,6 +25,6 @@ public class TimerDecorator: ActionDecorator
         File.AppendAllText(
             Path,
             $"{DateTimeOffset.Now:yyyy/MM/dd HH:mm:ss.fffzzz} | Executed action; time taken: {elapsedMs:F2} ms\n"
-        );    
+        );
     }
 }

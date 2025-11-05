@@ -4,8 +4,12 @@ using Spectre.Console;
 
 namespace App.UserActions.Export;
 
+/// <summary>
+/// Export to file action
+/// </summary>
 public class ExportToFile : UserAction
 {
+    /// <inheritdoc/>
     public override void Invoke(Application app)
     {
         AnsiConsole.Clear();

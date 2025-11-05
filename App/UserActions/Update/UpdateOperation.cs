@@ -5,8 +5,12 @@ using Spectre.Console;
 
 namespace App.UserActions.Update;
 
+/// <summary>
+/// Update operation action
+/// </summary>
 public class UpdateOperation : UserAction
 {
+    /// <inheritdoc/>
     public override void Invoke(Application app)
     {
         AnsiConsole.MarkupLine("[yellow]--- Update Operation ---[/]");
@@ -27,7 +31,7 @@ public class UpdateOperation : UserAction
             Console.ReadKey();
             return;
         }
-        
+
         var oldAccount = app.accounts.GetById(operation.BankAccountId)!;
         decimal oldBalance = oldAccount.Balance;
 
@@ -53,7 +57,7 @@ public class UpdateOperation : UserAction
             Console.ReadKey();
             return;
         }
-        
+
         string categoryInput = app.dataProvider.GetValue<string>(
             "Enter new category Id or Name", GetDataOptions.Repeat)!;
 

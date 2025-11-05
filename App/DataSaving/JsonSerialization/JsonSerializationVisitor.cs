@@ -3,20 +3,29 @@ using App.Core;
 
 namespace App.DataSaving.JsonSerialization;
 
+/// <summary>
+/// Visitor to serialize data in json
+/// </summary>
 public class JsonSerializationVisitor : ISerializationVisitor
 {
+    /// <summary>
+    /// Object to store serialized data
+    /// </summary>
     private readonly StringBuilder serialization = new();
 
+    /// <inheritdoc/>
     public void Reset()
     {
         serialization.Clear();
     }
 
+    /// <inheritdoc/>
     public string Serialize()
     {
         return serialization.ToString();
     }
 
+    /// <inheritdoc/>
     public void Visit(Operation operation)
     {
         Reset();
@@ -38,6 +47,7 @@ public class JsonSerializationVisitor : ISerializationVisitor
         serialization.Append(" }");
     }
 
+    /// <inheritdoc/>
     public void Visit(Category category)
     {
         Reset();
@@ -50,6 +60,7 @@ public class JsonSerializationVisitor : ISerializationVisitor
         serialization.Append(" }");
     }
 
+    /// <inheritdoc/>
     public void Visit(BankAccount account)
     {
         Reset();
