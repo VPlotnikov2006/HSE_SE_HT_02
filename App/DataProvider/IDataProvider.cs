@@ -34,8 +34,8 @@ public interface IDataProvider
     ) where T : struct, IParsable<T>, IComparable<T>;
 
     //TODO: Documentation
-    public T SelectValue<T>(IReadOnlyCollection<T> options, string? prompt = null);
+    public T SelectValue<T>(IReadOnlyCollection<T>? options, string? prompt = null) where T: notnull;
 
     //TODO: Documentation
-    public IEnumerable<T> SelectValue<T>(Group<T> options, string? prompt = null);
+    public IEnumerable<T> SelectValue<T>(Group<T> options) where T: notnull;
 }

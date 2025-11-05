@@ -18,7 +18,7 @@ public class Application
     CategoryFactory _categoryFactory,
     OperationBuilder _operationBuilder,
     Dictionary<string, Serializer> _serializers,
-    Dictionary<IEnumerable<string>, UserAction> _actions,
+    Dictionary<string, UserAction> _actions,
     IDataProvider _dataProvider
 
 )
@@ -33,12 +33,14 @@ public class Application
     public readonly OperationBuilder operationBuilder = _operationBuilder;
 
     public readonly Dictionary<string, Serializer> serializers = _serializers;
-    public readonly Dictionary<IEnumerable<string>, UserAction> actions = _actions;
+    public readonly Dictionary<string, UserAction> actions = _actions;
 
     public readonly IDataProvider dataProvider = _dataProvider;
 
+    private readonly Group<string> actions_group = new("Choose action", _actions.Keys.Select(x => x.Split('/').ToList()));
+
     public void AskUserAction()
     {
-        actions.GetValueOrDefault(dataProvider.SelectValue(new Group<string>("Choose action", actions.Keys)))?.Invoke();
+        actions.GetValueOrDefault(string.Join('/', [.. dataProvider.SelectValue(actions_group).Skip(1)]))?.Invoke(this);
     }
 }

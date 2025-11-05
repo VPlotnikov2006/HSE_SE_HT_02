@@ -1,7 +1,6 @@
 namespace App.UserActions;
 
-public abstract class UserAction(Application application)
+public abstract class UserAction()
 {
-    protected readonly Application _application = application;
-    public abstract void Invoke();
+    public abstract void Invoke(Application application);
 }

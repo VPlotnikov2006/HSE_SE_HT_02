@@ -22,7 +22,7 @@ public class Group<T>: IEnumerable<Group<T>>
     public Group(T _value, IEnumerable<LinkedList<T>> _paths)
     {
         value = _value;
-        subgroups = _paths
+        subgroups = [.. _paths
             .Where(p => p.Count > 0)
             .GroupBy(p => p.First!.Value)
             .Select(g =>
@@ -30,13 +30,12 @@ public class Group<T>: IEnumerable<Group<T>>
                 var groupName = g.Key;
                 var trimmed = g.Select(p =>
                     {
-                        LinkedList<T> copy = new(p);
-                        copy.RemoveFirst();
-                        return copy;
+                        p.RemoveFirst();
+                        return p;
                     }
-                ).Where(p => p.Count > 0);
+                ).Where(p => p.Count > 0).ToArray();
                 return new Group<T>(groupName, trimmed);
-            });
+            })];
     }
 
     public Group(T _value, IEnumerable<IEnumerable<T>> _paths) : this(_value, _paths.Select(p => new LinkedList<T>(p)))
