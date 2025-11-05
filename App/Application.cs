@@ -4,7 +4,6 @@ using App.Data.CategoryData;
 using App.Data.OperationData;
 using App.DataProvider;
 using App.DataSaving;
-using App.Notification;
 using App.UserActions;
 
 namespace App;

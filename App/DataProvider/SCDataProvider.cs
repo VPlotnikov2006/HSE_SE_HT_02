@@ -32,9 +32,11 @@ public class SCDataProvider : IDataProvider
 
             case GetDataOptions.Default:
                 {
+                    var defaultText = Markup.Escape(default(T)?.ToString() ?? "<null>");
+
                     var input = AnsiConsole.Prompt(
                         new TextPrompt<string>(
-                            $"[green]{prompt}[/] (press [grey]<Enter>[/] for default = [yellow]{default(T)}[/][/])")
+                            $"[green]{prompt}[/] (press [grey]<Enter>[/] for default = [yellow]{defaultText}[/])")
                             .AllowEmpty()
                     );
 

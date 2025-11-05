@@ -7,12 +7,17 @@ using App.Data.CategoryData;
 using App.Data.OperationData;
 using App.DataProvider;
 using App.DataSaving;
+using App.DataSaving.ConsoleSerialization;
 using App.DataSaving.JsonSerialization;
 using App.Notification;
 using App.UserActions;
 using App.UserActions.ActionDecorators;
 using App.UserActions.Create;
+using App.UserActions.Delete;
+using App.UserActions.Export;
+using App.UserActions.Update;
 using Microsoft.Extensions.DependencyInjection;
+using Spectre.Console;
 
 internal static class Program
 {
@@ -30,9 +35,11 @@ internal static class Program
             .AddSingleton<CategoryFactory>()
             .AddSingleton<OperationBuilder>()
             .AddSingleton<JsonSerializationVisitor>()
+            .AddSingleton<ConsoleSerializationVisitor>()
             .AddSingleton<IDataProvider, SCDataProvider>()
             .AddTransient<ActionDecorator, TimerDecorator>()
             .AddKeyedSingleton<Serializer, JsonSerializer>("File")
+            .AddKeyedSingleton<Serializer, ConsoleSerializer>("Console")
             .AddTransient(provider =>
                 {
                     List<string> keys = ["File", "Console"];
@@ -40,11 +47,33 @@ internal static class Program
                 }
             )
             .AddKeyedTransient<UserAction, CreateBankAccount>("Create/Bank Account")
+            .AddKeyedTransient<UserAction, CreateCategory>("Create/Category")
+            .AddKeyedTransient<UserAction, CreateOperation>("Create/Operation")
+            .AddKeyedTransient<UserAction, DeleteBankAccount>("Delete/Bank Account")
+            .AddKeyedTransient<UserAction, DeleteCategory>("Delete/Category")
+            .AddKeyedTransient<UserAction, DeleteOperation>("Delete/Operation")
+            .AddKeyedTransient<UserAction, UpdateBankAccount>("Update/Bank Account")
+            .AddKeyedTransient<UserAction, UpdateCategory>("Update/Category")
+            .AddKeyedTransient<UserAction, UpdateOperation>("Update/Operation")
+            .AddKeyedTransient<UserAction, ExportToFile>("Export/To File")
+            .AddKeyedTransient<UserAction, ExportToConsole>("Export/To Console")
+            .AddKeyedTransient<UserAction, Exit>("Exit")
             .AddTransient(
                 provider =>
                 {
                     List<string> paths = [
-                        "Create/Bank Account"
+                        "Exit",
+                        "Create/Bank Account",
+                        "Create/Category",
+                        "Create/Operation",
+                        "Delete/Bank Account",
+                        "Delete/Category",
+                        "Delete/Operation",
+                        "Update/Bank Account",
+                        "Update/Category",
+                        "Update/Operation",
+                        "Export/To File",
+                        "Export/To Console"
                     ];
                     var actions = provider.GetKeyedServicesDictionary<string, UserAction>(paths);
                     Dictionary<string, UserAction> result = [];
@@ -61,6 +90,10 @@ internal static class Program
             .BuildServiceProvider();
 
         Application application = services.GetRequiredService<Application>();
-        application.AskUserAction();
+        while (true)
+        {
+            AnsiConsole.Clear();
+            application.AskUserAction();
+        }
     }
 }
