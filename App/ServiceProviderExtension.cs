@@ -21,7 +21,7 @@ public static class ServiceProviderKeyedExtensions
         return dict;
     }
 
-    public static Dictionary<KeyType, T> GetKeyedServicesDictionary<T, KeyType>(
+    public static Dictionary<KeyType, T> GetKeyedServicesDictionary<KeyType, T>(
         this IServiceProvider provider,
         IEnumerable<KeyType> keys)
         where T : class
