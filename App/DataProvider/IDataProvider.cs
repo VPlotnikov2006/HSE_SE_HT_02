@@ -35,4 +35,7 @@ public interface IDataProvider
 
     //TODO: Documentation
     public T SelectValue<T>(IReadOnlyCollection<T> options, string? prompt = null);
+
+    //TODO: Documentation
+    public IEnumerable<T> SelectValue<T>(Group<T> options, string? prompt = null);
 }

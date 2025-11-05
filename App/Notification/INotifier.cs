@@ -4,5 +4,8 @@ public interface INotifier
 {
     public void SendMessage(string UserName, string Message);
 
-    public static abstract INotifier GetInstance();
+    public static virtual INotifier GetInstance()
+    {
+        throw new NotImplementedException();
+    }
 }

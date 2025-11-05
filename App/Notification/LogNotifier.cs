@@ -9,7 +9,7 @@ public class LogNotifier : INotifier
 
     public LogNotifier()
     {
-        File.AppendAllText(Path, $"LogNotifier was created\n");
+        File.AppendAllText(Path, $"{DateTimeOffset.Now:yyyy/MM/dd HH:mm:ss.fffzzz} | LogNotifier was created\n");
     }
 
     public static INotifier GetInstance()
@@ -26,6 +26,6 @@ public class LogNotifier : INotifier
 
     public void SendMessage(string UserName, string Message)
     {
-        File.AppendAllText(Path, $"Send message \"{Message}\" to user \"{UserName}\"\n");
+        File.AppendAllText(Path, $"{DateTimeOffset.Now:yyyy/MM/dd HH:mm:ss.fffzzz} | Send message \"{Message}\" to user \"{UserName}\"\n");
     }
 }

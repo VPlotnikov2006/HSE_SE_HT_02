@@ -4,14 +4,14 @@ using App.Notification;
 
 namespace App.Core.Initialization;
 
-public class BankAccountFactory<TNotifier>(IBankAccountRepository repository)
- where TNotifier : INotifier
+public class BankAccountFactory(IBankAccountRepository repository, INotifier notifier)
 {
     private readonly IBankAccountRepository _repository = repository;
+    private readonly INotifier _notifier = notifier;
 
     public BankAccount Create(BankAccountContext ctx)
     {
-        BankAccount account = new(TNotifier.GetInstance(), Guid.NewGuid(), ctx);
+        BankAccount account = new(_notifier, Guid.NewGuid(), ctx);
 
         _repository.Add(account);
 

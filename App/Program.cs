@@ -27,6 +27,24 @@ public static class ServiceProviderKeyedExtensions
 
         return dict;
     }
+
+    public static Dictionary<KeyType, T> GetKeyedServicesDictionary<T, KeyType>(
+        this IServiceProvider provider,
+        IEnumerable<KeyType> keys)
+        where T : class
+        where KeyType : notnull
+    {
+        var dict = new Dictionary<KeyType, T>();
+
+        foreach (var key in keys)
+        {
+            var service = provider.GetKeyedService<T>(key);
+            if (service is not null)
+                dict[key] = service;
+        }
+
+        return dict;
+    }
 }
 
 internal static class Program
@@ -40,15 +58,16 @@ internal static class Program
             .AddSingleton<IOperationRepository, DictOperationRepository>()
             .AddSingleton<IBankAccountRepository, DictBankAccountRepository>()
             .AddSingleton<ICategoryRepository, DictCategoryRepository>()
-            .AddSingleton<BankAccountFactory<LogNotifier>>()
+            .AddTransient<INotifier, LogNotifier>(_ => (LogNotifier)LogNotifier.GetInstance())
+            .AddSingleton<BankAccountFactory>()
             .AddSingleton<CategoryFactory>()
             .AddSingleton<OperationBuilder>()
             .AddSingleton<JsonSerializationVisitor>()
             .AddKeyedSingleton<Serializer, JsonSerializer>("File")
-            .AddSingleton(provider =>
+            .AddTransient(provider =>
             {
                 List<string> keys = ["File", "Console"];
-                return provider.GetKeyedServicesDictionary<Serializer>(keys);
+                return provider.GetKeyedServicesDictionary<Serializer, string>(keys);
             })
             .BuildServiceProvider();
 
@@ -57,7 +76,7 @@ internal static class Program
         IBankAccountRepository accounts = services.GetRequiredService<IBankAccountRepository>();
         OperationBuilder operationBuilder = new(operations);
         CategoryFactory categoryFactory = new(categories);
-        BankAccountFactory<LogNotifier> accountFactory = new(accounts);
+        BankAccountFactory accountFactory = services.GetRequiredService<BankAccountFactory>();
 
         Serializer serializer = new JsonSerializer(new());
 
